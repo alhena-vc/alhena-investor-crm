@@ -1,38 +1,39 @@
-import { supabase } from '@/lib/supabase/client';
+import { supabaseInsertHeaders, supabaseRestFetch } from '@/lib/supabase-rest';
 import type { CreateInvestorPayload, Investor } from '@/types/investor';
 
-const investorSelect = '*';
-
 export async function getInvestors() {
-  const { data, error } = await supabase
-    .from('investors')
-    .select(investorSelect)
-    .order('created_at', { ascending: false, nullsFirst: false })
-    .execute<Investor[]>();
+  const response = await supabaseRestFetch('investors?select=*&order=created_at.desc');
 
-  if (error) {
-    throw new Error(`Failed to load investors: ${error.message}`);
+  if (!response.ok) {
+    throw new Error(`Failed to load investors: ${response.status}`);
   }
 
-  return data ?? [];
+  return (await response.json()) as Investor[];
 }
 
 export async function getInvestorById(id: string) {
-  const { data, error } = await supabase.from('investors').select(investorSelect).eq('id', id).maybeSingle<Investor>();
+  const response = await supabaseRestFetch(`investors?select=*&id=eq.${encodeURIComponent(id)}&limit=1`);
 
-  if (error) {
-    throw new Error(`Failed to load investor: ${error.message}`);
+  if (!response.ok) {
+    throw new Error(`Failed to load investor: ${response.status}`);
   }
 
-  return data;
+  const investors = (await response.json()) as Investor[];
+  return investors[0] ?? null;
 }
 
 export async function createInvestor(payload: CreateInvestorPayload) {
-  const { data, error } = await supabase.from('investors').insert(payload).select(investorSelect).single<Investor>();
+  const response = await supabaseRestFetch('investors', {
+    method: 'POST',
+    headers: supabaseInsertHeaders(),
+    body: JSON.stringify([payload]),
+  });
 
-  if (error) {
-    throw new Error(`Failed to create investor: ${error.message}`);
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Failed to create investor: ${response.status} ${body}`);
   }
 
-  return data;
+  const created = (await response.json()) as Investor[];
+  return created[0];
 }
