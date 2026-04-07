@@ -1,46 +1,47 @@
-import { supabaseInsertHeaders, supabaseRestFetch } from '@/lib/supabase-rest';
+import { supabase } from '@/lib/supabase/client';
 import type { CreateInvestorPayload, Investor } from '@/types/investor';
 
 const investorSelect =
   'id,name,fund_name,contact_name,contact_role,relationship_status,interaction_status,chat_status,telegram_chat_name,telegram_chat_link,sector_tags,stage_tags,geo_tags,anti_focus,preferred_angle,ai_summary,last_contact_date,next_action,next_action_date,created_at';
 
 export async function getInvestors() {
-  const response = await supabaseRestFetch(
-    `investors?select=${investorSelect}&order=created_at.desc.nullslast`,
-  );
+  const { data, error } = await supabase
+    .from('investors')
+    .select(investorSelect)
+    .order('created_at', { ascending: false, nullsFirst: false })
+    .execute<Investor[]>();
 
-  if (!response.ok) {
-    throw new Error(`Failed to load investors: ${response.status}`);
+  if (error) {
+    throw new Error(`Failed to load investors: ${error.message}`);
   }
 
-  return (await response.json()) as Investor[];
+  return data ?? [];
 }
 
 export async function getInvestorById(id: string) {
-  const response = await supabaseRestFetch(
-    `investors?select=${investorSelect}&id=eq.${encodeURIComponent(id)}&limit=1`,
-  );
+  const { data, error } = await supabase
+    .from('investors')
+    .select(investorSelect)
+    .eq('id', id)
+    .maybeSingle<Investor>();
 
-  if (!response.ok) {
-    throw new Error(`Failed to load investor: ${response.status}`);
+  if (error) {
+    throw new Error(`Failed to load investor: ${error.message}`);
   }
 
-  const investors = (await response.json()) as Investor[];
-  return investors[0] ?? null;
+  return data;
 }
 
 export async function createInvestor(payload: CreateInvestorPayload) {
-  const response = await supabaseRestFetch('investors', {
-    method: 'POST',
-    headers: supabaseInsertHeaders(),
-    body: JSON.stringify([payload]),
-  });
+  const { data, error } = await supabase
+    .from('investors')
+    .insert(payload)
+    .select(investorSelect)
+    .single<Investor>();
 
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`Failed to create investor: ${response.status} ${body}`);
+  if (error) {
+    throw new Error(`Failed to create investor: ${error.message}`);
   }
 
-  const created = (await response.json()) as Investor[];
-  return created[0];
+  return data;
 }
