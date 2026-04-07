@@ -1,0 +1,43 @@
+export type Investor = {
+  id: string;
+  name: string | null;
+  fund_name: string | null;
+  contact_name: string | null;
+  contact_role: string | null;
+  relationship_status: string | null;
+  interaction_status: string | null;
+  chat_status: string | null;
+  telegram_chat_name: string | null;
+  telegram_chat_link: string | null;
+  sector_tags: string[] | null;
+  stage_tags: string[] | null;
+  geo_tags: string[] | null;
+  anti_focus: string | null;
+  preferred_angle: string | null;
+  ai_summary: string | null;
+  last_contact_date: string | null;
+  next_action: string | null;
+  next_action_date: string | null;
+  created_at?: string;
+};
+
+export type CreateInvestorPayload = {
+  name: string;
+  fund_name?: string;
+  contact_name?: string;
+  contact_role?: string;
+  relationship_status?: string;
+  interaction_status?: string;
+  chat_status?: string;
+  telegram_chat_name?: string;
+  telegram_chat_link?: string;
+  sector_tags?: string[];
+  stage_tags?: string[];
+  geo_tags?: string[];
+  anti_focus?: string;
+  preferred_angle?: string;
+  ai_summary?: string;
+  last_contact_date?: string;
+  next_action?: string;
+  next_action_date?: string;
+};
