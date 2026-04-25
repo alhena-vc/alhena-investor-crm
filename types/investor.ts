@@ -20,7 +20,7 @@ export interface Investor {
   legal_name: string | null          // "Название ЮЛ"
   inn: string | null
   created_at: string
-  updated_at: string
+  updated_at: string; fund_name?: string; contact_name?: string; contact_role?: string; relationship_status?: string; interaction_status?: string; chat_status?: string; telegram_chat_name?: string; telegram_chat_link?: string; sector_tags?: string[] | null; stage_tags?: string[] | null; geo_tags?: string[] | null; anti_focus?: string | null; preferred_angle?: string | null; ai_summary?: string | null; last_contact_date?: string | null; next_action?: string | null; next_action_date?: string | null
 }
 
 export interface Startup {
