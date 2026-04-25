@@ -57,3 +57,7 @@ export interface AIResponse {
   tokens_used: number
   created_at: string
 }
+
+export interface CreateInvestorPayload { name: string; fund_name?: string; contact_name?: string; contact_role?: string; relationship_status?: string; interaction_status?: string; chat_status?: string; telegram_chat_name?: string; telegram_chat_link?: string; sector_tags?: string[]; stage_tags?: string[]; geo_tags?: string[]; anti_focus?: string; preferred_angle?: string; ai_summary?: string; last_contact_date?: string; next_action?: string; next_action_date?: string; }
+
+export interface CreateInvestorPayload { name: string; fund_name?: string; contact_name?: string; contact_role?: string; relationship_status?: string; interaction_status?: string; chat_status?: string; telegram_chat_name?: string; telegram_chat_link?: string; sector_tags?: string[]; stage_tags?: string[]; geo_tags?: string[]; anti_focus?: string; preferred_angle?: string; ai_summary?: string; last_contact_date?: string; next_action?: string; next_action_date?: string; }
