@@ -1,42 +1,21 @@
-type SupabaseConfig = {
-  url: string;
-  key: string;
-};
+import 'server-only';
 
-function getSupabaseConfig(): SupabaseConfig {
-  const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_ANON_KEY;
+import { createClient } from '@supabase/supabase-js';
+import { getPublicSupabaseEnv, getServerSupabaseServiceRoleKey } from '@/lib/env';
 
-  if (!url || !key) {
-    throw new Error(
-      "Missing Supabase env vars. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
-    );
-  }
+export function createSupabaseServerClient() {
+  const { url, anonKey } = getPublicSupabaseEnv();
 
-  return { url, key };
+  return createClient(url, anonKey, {
+    auth: { persistSession: false },
+  });
 }
 
-export async function supabaseRest<T>(
-  path: string,
-  init?: RequestInit,
-): Promise<T> {
-  const { url, key } = getSupabaseConfig();
+export function createSupabaseAdminClient() {
+  const { url } = getPublicSupabaseEnv();
+  const serviceRoleKey = getServerSupabaseServiceRoleKey();
 
-  const response = await fetch(`${url}/rest/v1/${path}`, {
-    ...init,
-    headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-      ...(init?.headers ?? {}),
-    },
-    cache: "no-store",
+  return createClient(url, serviceRoleKey, {
+    auth: { persistSession: false },
   });
-
-  if (!response.ok) {
-    const errorBody = await response.text();
-    throw new Error(errorBody || `Supabase request failed: ${response.status}`);
-  }
-
-  return (await response.json()) as T;
 }
