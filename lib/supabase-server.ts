@@ -13,7 +13,9 @@ function getSupabaseConfig(): SupabaseConfig {
     );
   }
 
-  return { url, key };
+  const normalizedUrl = url.replace(/\/rest\/v1\/?$/, "");
+
+  return { url: normalizedUrl, key };
 }
 
 export async function supabaseRest<T>(

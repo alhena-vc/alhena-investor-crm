@@ -59,7 +59,7 @@ function MatchCard({ match, onAction }: { match: MatchResult; onAction: (m: Matc
       </div>
 
       <div className="bg-blue-50 rounded-lg p-2.5 mb-3 text-xs text-gray-700 italic">
-        "{match.intro_message}"
+        &quot;{match.intro_message}&quot;
       </div>
 
       <button
@@ -152,7 +152,7 @@ export default function AIChat() {
 
       addMessage({
         role: 'assistant',
-        content: `Найдено **${data?.matches?.length}** подходящих инвесторов (${data?.matches?.filter\(\(m\) => m\.priority === .high.\)\.length} приоритетных)`,
+        content: `Найдено **${data?.matches?.length ?? 0}** подходящих инвесторов (${data?.matches?.filter((m: MatchResult) => m.priority === 'high').length ?? 0} приоритетных)`,
         matches: data.matches,
       })
     } catch (e) {

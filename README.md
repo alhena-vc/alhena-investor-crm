@@ -37,3 +37,9 @@ npm run dev
 ## Deploy
 
 This repository is Vercel-ready. Add the same environment variables in Vercel project settings.
+
+## CRM v2 (clean-slate blueprint)
+
+- Product/technical blueprint: `docs/crm-v2-mvp-plan.md`
+- Initial Supabase schema migration: `supabase/migrations/20260425_000001_crm_v2_init.sql`
+
