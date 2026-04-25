@@ -152,7 +152,7 @@ export default function AIChat() {
 
       addMessage({
         role: 'assistant',
-        content: `Найдено **${data.total}** подходящих инвесторов (${data.high_priority} приоритетных)`,
+        content: `Найдено **${data?.matches?.length}** подходящих инвесторов (${data?.matches?.filter\(\(m\) => m\.priority === .high.\)\.length} приоритетных)`,
         matches: data.matches,
       })
     } catch (e) {
