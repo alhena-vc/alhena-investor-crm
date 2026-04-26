@@ -24,16 +24,23 @@ export async function supabaseRestFetch(path: string, init?: RequestInit) {
     throw new Error('NEXT_PUBLIC_SUPABASE_URL is missing');
   }
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/${path}`, {
-    ...init,
-    headers: {
-      ...getHeaders(),
-      ...(init?.headers ?? {}),
-    },
-    cache: 'no-store',
-  });
+  const requestUrl = `${supabaseUrl}/rest/v1/${path}`;
 
-  return response;
+  try {
+    const response = await fetch(requestUrl, {
+      ...init,
+      headers: {
+        ...getHeaders(),
+        ...(init?.headers ?? {}),
+      },
+      cache: 'no-store',
+    });
+
+    return response;
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'Unknown fetch error';
+    throw new Error(`Supabase fetch failed for ${requestUrl}: ${reason}`);
+  }
 }
 
 export function supabaseInsertHeaders() {
