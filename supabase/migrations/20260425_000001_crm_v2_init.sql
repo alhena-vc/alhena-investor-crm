@@ -33,8 +33,29 @@ create table if not exists public.investors (
   updated_at timestamptz not null default now()
 );
 
-create index if not exists idx_investors_name on public.investors(name);
-create index if not exists idx_investors_type on public.investors(investor_type);
+do $$
+begin
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'investors'
+      and column_name = 'name'
+  ) then
+    create index if not exists idx_investors_name on public.investors(name);
+  end if;
+
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'investors'
+      and column_name = 'investor_type'
+  ) then
+    create index if not exists idx_investors_type on public.investors(investor_type);
+  end if;
+end
+$$;
 
 -- 3) Projects
 create table if not exists public.projects (
