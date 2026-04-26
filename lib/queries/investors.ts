@@ -2,7 +2,7 @@ import { supabaseInsertHeaders, supabaseRestFetch } from '@/lib/supabase-rest';
 import type { CreateInvestorPayload, Investor } from '@/types/investor';
 
 const investorSelect =
-  'id,name,fund_name,contact_name,contact_role,relationship_status,interaction_status,chat_status,telegram_chat_name,telegram_chat_link,sector_tags,stage_tags,geo_tags,anti_focus,preferred_angle,ai_summary,last_contact_date,next_action,next_action_date,created_at';
+  'id,name,fund_name,contact_role,relationship_status,interaction_status,chat_status,telegram_chat_name,telegram_chat_link,sector_tags,stage_tags,geo_tags,anti_focus,preferred_angle,ai_summary,last_contact_date,next_action,next_action_date,created_at';
 
 export async function getInvestors() {
   const response = await supabaseRestFetch(
