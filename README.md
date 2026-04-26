@@ -23,6 +23,7 @@ Required:
 Optional but used by parts of the app:
 
 - `ANTHROPIC_API_KEY`
+- `SUPABASE_ACCESS_TOKEN`
 - `GITHUB_TOKEN`
 - `GITHUB_OWNER`
 - `GITHUB_REPO`
@@ -54,9 +55,12 @@ Local preview is currently available on `http://localhost:3000`.
 npm run lint
 npm run build
 npm run check:readiness
+npm run supabase:version
+npm run deploy:vercel-hook
 ```
 
 `check:readiness` verifies required environment variables and confirms that the latest app-alignment migration file exists locally.
+`deploy:vercel-hook` triggers a Vercel deployment when `VERCEL_DEPLOY_HOOK` is configured.
 
 ## Database
 

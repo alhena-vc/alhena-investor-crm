@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check:readiness": "tsx scripts/check-readiness.ts"
+    "check:readiness": "tsx scripts/check-readiness.ts",
+    "supabase:version": "npx supabase --version",
+    "supabase:login": "npx supabase login --no-browser",
+    "deploy:vercel-hook": "node scripts/trigger-vercel-deploy.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.90.0",

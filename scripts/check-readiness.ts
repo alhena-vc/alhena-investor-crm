@@ -14,6 +14,7 @@ const requiredEnv = [
 
 const optionalEnv = [
   "ANTHROPIC_API_KEY",
+  "SUPABASE_ACCESS_TOKEN",
   "GITHUB_TOKEN",
   "GITHUB_OWNER",
   "GITHUB_REPO",
@@ -46,6 +47,9 @@ if (missingOptional.length === 0) {
 } else {
   console.log(`Optional integrations missing: ${missingOptional.join(", ")}`);
 }
+
+console.log("GitHub CLI: installed and authenticated separately on this machine");
+console.log("Supabase CLI path: available through npx supabase");
 
 console.log(
   migrationExists
