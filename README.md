@@ -37,3 +37,15 @@ npm run dev
 ## Deploy
 
 This repository is Vercel-ready. Add the same environment variables in Vercel project settings.
+
+## CRM v2 (clean-slate blueprint)
+
+- Product/technical blueprint: `docs/crm-v2-mvp-plan.md`
+- Initial Supabase schema migration: `supabase/migrations/20260425_000001_crm_v2_init.sql`
+
+
+## Separate clean-slate app
+
+A brand new independent project is available at `projects/alhena-crm-v2`.
+Use this folder to avoid layering on top of legacy CRM routes/components.
+
