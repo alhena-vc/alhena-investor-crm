@@ -5,18 +5,30 @@ import { FormEvent, useState } from "react";
 
 type State = {
   name: string;
-  email: string;
-  firm: string;
-  stage: string;
-  notes: string;
+  fund_name: string;
+  contact_name: string;
+  contact_role: string;
+  relationship_status: string;
+  sector_tags: string;
+  stage_tags: string;
+  geo_tags: string;
+  preferred_angle: string;
+  next_action: string;
+  ai_summary: string;
 };
 
 const initialState: State = {
   name: "",
-  email: "",
-  firm: "",
-  stage: "",
-  notes: "",
+  fund_name: "",
+  contact_name: "",
+  contact_role: "",
+  relationship_status: "",
+  sector_tags: "",
+  stage_tags: "",
+  geo_tags: "",
+  preferred_angle: "",
+  next_action: "",
+  ai_summary: "",
 };
 
 export function AddInvestorModal() {
@@ -35,7 +47,12 @@ export function AddInvestorModal() {
       const response = await fetch("/api/investors", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          sector_tags: parseTags(form.sector_tags),
+          stage_tags: parseTags(form.stage_tags),
+          geo_tags: parseTags(form.geo_tags),
+        }),
       });
 
       if (!response.ok) {
@@ -81,46 +98,106 @@ export function AddInvestorModal() {
               <input
                 required
                 value={form.name}
-                placeholder="Name"
+                placeholder="Investor name"
                 onChange={(event) =>
                   setForm((current) => ({ ...current, name: event.target.value }))
                 }
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
               />
 
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <input
+                  value={form.fund_name}
+                  placeholder="Fund name"
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, fund_name: event.target.value }))
+                  }
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                />
+
+                <input
+                  value={form.relationship_status}
+                  placeholder="Relationship status"
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, relationship_status: event.target.value }))
+                  }
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <input
+                  value={form.contact_name}
+                  placeholder="Contact name"
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, contact_name: event.target.value }))
+                  }
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                />
+
+                <input
+                  value={form.contact_role}
+                  placeholder="Contact role"
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, contact_role: event.target.value }))
+                  }
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                />
+              </div>
+
               <input
-                value={form.email}
-                placeholder="Email"
+                value={form.sector_tags}
+                placeholder="Sector tags (comma separated)"
                 onChange={(event) =>
-                  setForm((current) => ({ ...current, email: event.target.value }))
+                  setForm((current) => ({ ...current, sector_tags: event.target.value }))
+                }
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              />
+
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <input
+                  value={form.stage_tags}
+                  placeholder="Stage tags (comma separated)"
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, stage_tags: event.target.value }))
+                  }
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                />
+
+                <input
+                  value={form.geo_tags}
+                  placeholder="Geo tags (comma separated)"
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, geo_tags: event.target.value }))
+                  }
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                />
+              </div>
+
+              <input
+                value={form.preferred_angle}
+                placeholder="Preferred angle"
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, preferred_angle: event.target.value }))
                 }
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
               />
 
               <input
-                value={form.firm}
-                placeholder="Firm"
+                value={form.next_action}
+                placeholder="Next action"
                 onChange={(event) =>
-                  setForm((current) => ({ ...current, firm: event.target.value }))
-                }
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-              />
-
-              <input
-                value={form.stage}
-                placeholder="Stage"
-                onChange={(event) =>
-                  setForm((current) => ({ ...current, stage: event.target.value }))
+                  setForm((current) => ({ ...current, next_action: event.target.value }))
                 }
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
               />
 
               <textarea
-                value={form.notes}
-                placeholder="Notes"
-                rows={3}
+                value={form.ai_summary}
+                placeholder="AI summary or notes"
+                rows={4}
                 onChange={(event) =>
-                  setForm((current) => ({ ...current, notes: event.target.value }))
+                  setForm((current) => ({ ...current, ai_summary: event.target.value }))
                 }
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
               />
@@ -149,4 +226,11 @@ export function AddInvestorModal() {
       ) : null}
     </>
   );
+}
+
+function parseTags(value: string) {
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
 }

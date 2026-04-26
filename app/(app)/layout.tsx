@@ -4,12 +4,17 @@ export default function AppLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="grid min-h-screen grid-cols-1 md:grid-cols-[240px_1fr]">
-      <aside className="border-r border-slate-200 bg-white p-4">
-        <h1 className="mb-6 text-lg font-semibold">Alhena CRM</h1>
-        <SidebarNav />
+    <div className="flex h-screen overflow-hidden">
+      <aside className="w-56 flex-shrink-0 bg-[#0d1117] border-r border-white/[0.06] flex flex-col">
+        <div className="px-5 pt-6 pb-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Alhena</p>
+          <p className="text-xl font-bold text-white mt-0.5">CRM</p>
+        </div>
+        <div className="flex-1 px-2 pb-4 overflow-y-auto">
+          <SidebarNav />
+        </div>
       </aside>
-      <main className="p-6">{children}</main>
+      <main className="flex-1 overflow-auto">{children}</main>
     </div>
   );
 }

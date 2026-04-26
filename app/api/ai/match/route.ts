@@ -46,7 +46,10 @@ export async function POST(req: NextRequest) {
 
     // Pre-filter to reduce Claude context (keep top candidates)
     if (filters?.status) {
-      investors = investors.filter((i) => i.status === filters.status)
+      investors = investors.filter((i) => {
+        const status = i.relationship_status ?? i.status
+        return normalizeText(status) === normalizeText(filters.status)
+      })
     }
 
     // Take max 50 investors per request to stay within context
@@ -137,13 +140,30 @@ function investorToContext(i: Investor) {
   return {
     id: i.id,
     name: i.name,
-    status: i.status,
-    sectors: i.sectors,
-    stages: i.stages,
-    geography: i.geography,
+    fund_name: i.fund_name,
+    status: i.relationship_status ?? i.status,
+    sectors: joinValues(i.sector_tags, i.sectors),
+    stages: joinValues(i.stage_tags, i.stages),
+    geography: joinValues(i.geo_tags, i.geography),
     check_size: i.check_size,
-    description: i.description?.slice(0, 300),  // truncate
-    contact: i.contact,
+    description: compactText(i.ai_summary, i.description)?.slice(0, 300),
+    contact: compactText(i.contact_name, i.contact),
+    contact_role: i.contact_role,
+    preferred_angle: i.preferred_angle,
+    next_action: i.next_action,
     invest_phase: i.invest_phase,
   }
+}
+
+function joinValues(tags?: string[] | null, fallback?: string | null) {
+  if (tags?.length) return tags.join(', ')
+  return fallback ?? null
+}
+
+function compactText(primary?: string | null, fallback?: string | null) {
+  return primary?.trim() || fallback?.trim() || null
+}
+
+function normalizeText(value: string | null | undefined) {
+  return (value ?? '').trim().toLowerCase()
 }

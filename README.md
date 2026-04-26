@@ -1,31 +1,43 @@
-# Alhena Investor CRM (MVP shell)
+# Alhena Investor CRM
 
-Clean Next.js app shell for investor tracking with Supabase-backed investor data.
+Investor CRM on Next.js with Supabase-backed data, AI matching, deals, and communications tracking.
 
-## Tech stack
+## Stack
 
-- Next.js (App Router)
+- Next.js App Router
 - React
 - Tailwind CSS
-- Supabase REST API integration
+- Supabase REST access
+- Anthropic API for AI routes
 
 ## Environment
 
-Set these vars in `.env.local` (and in Vercel):
+Copy `.env.example` to `.env.local` and set the values.
 
-```bash
-SUPABASE_URL=...
-SUPABASE_SERVICE_ROLE_KEY=...
-```
+Required:
 
-## Routes
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
 
-- `/dashboard` — overview
-- `/investors` — list with add-investor modal
-- `/investors/[id]` — detail page
-- `/projects` — skeleton
-- `/outreach` — skeleton
-- `/followups` — skeleton
+Optional but used by parts of the app:
+
+- `ANTHROPIC_API_KEY`
+- `GITHUB_TOKEN`
+- `GITHUB_OWNER`
+- `GITHUB_REPO`
+- `GITHUB_BRANCH`
+- `VERCEL_DEPLOY_HOOK`
+
+## Main routes
+
+- `/dashboard` - operational overview
+- `/investors` - investor workspace and AI matching
+- `/investors/[id]` - investor detail page
+- `/projects` - project registry
+- `/outreach` - deals pipeline
+- `/followups` - communications timeline
+- `/test-ai` - AI playground route
 
 ## Development
 
@@ -34,6 +46,28 @@ npm install
 npm run dev
 ```
 
-## Deploy
+Local preview is currently available on `http://localhost:3000`.
 
-This repository is Vercel-ready. Add the same environment variables in Vercel project settings.
+## Quality checks
+
+```bash
+npm run lint
+npm run build
+npm run check:readiness
+```
+
+`check:readiness` verifies required environment variables and confirms that the latest app-alignment migration file exists locally.
+
+## Database
+
+Important migrations:
+
+- `supabase/migrations/20260425_000001_crm_v2_init.sql`
+- `supabase/migrations/20260426_000002_crm_app_alignment.sql`
+
+Before production deployment, apply the latest migration to the real Supabase project.
+
+## Notes
+
+- The legacy clean-slate reference app still exists in `projects/alhena-crm-v2`.
+- The main active app is the root project in this repository.

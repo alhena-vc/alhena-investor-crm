@@ -4,18 +4,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/investors", label: "Investors" },
-  { href: "/projects", label: "Projects" },
-  { href: "/outreach", label: "Outreach" },
-  { href: "/followups", label: "Follow-ups" },
+  { href: "/dashboard", label: "Dashboard", icon: "◈" },
+  { href: "/investors", label: "Investors", icon: "◉" },
+  { href: "/projects", label: "Projects", icon: "◫" },
+  { href: "/outreach", label: "Outreach", icon: "◎" },
+  { href: "/followups", label: "Follow-ups", icon: "◷" },
 ];
 
 export function SidebarNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="space-y-2">
+    <nav className="space-y-0.5">
       {navItems.map((item) => {
         const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
 
@@ -23,12 +23,13 @@ export function SidebarNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`block rounded-lg px-3 py-2 text-sm transition ${
+            className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
               active
-                ? "bg-blue-600 text-white"
-                : "text-slate-700 hover:bg-slate-200 hover:text-slate-900"
+                ? "bg-white/10 text-white font-medium"
+                : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
             }`}
           >
+            <span className="text-base leading-none">{item.icon}</span>
             {item.label}
           </Link>
         );

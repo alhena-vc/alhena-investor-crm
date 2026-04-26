@@ -16,7 +16,7 @@ export async function getInvestors() {
   return (await response.json()) as Investor[];
 }
 
-export async function getInvestorById(id: string) {
+export async function getInvestorById(id: string): Promise<Investor | null> {
   const response = await supabaseRestFetch(
     `investors?select=${investorSelect}&id=eq.${encodeURIComponent(id)}&limit=1`,
   );
